@@ -1,86 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>OCTA NETWORK</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    /* Reset */
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
       margin: 20px;
       background: #f4f4f4;
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
     }
+
     h1 {
-      text-align: center;
       color: #004aad;
       margin-bottom: 5px;
       animation: fadeInMove 2s infinite alternate;
-      font-size: 36px;
+      font-size: 2.5rem;
       letter-spacing: 1.5px;
       text-shadow: 1px 1px 3px #aaa;
+      text-align: center;
+      user-select: none;
     }
+
     @keyframes fadeInMove {
       0% { opacity: 0; transform: translateY(-10px); }
       100% { opacity: 1; transform: translateY(0); }
     }
+
     #signature {
-      text-align: center;
-      font-size: 14px;
+      font-size: 1rem;
       color: #555;
       animation: floatText 4s ease-in-out infinite;
+      margin-bottom: 15px;
+      text-align: center;
+      user-select: none;
     }
+
     @keyframes floatText {
       0% { transform: translateY(0); }
       50% { transform: translateY(-5px); }
       100% { transform: translateY(0); }
     }
+
     .controls {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       gap: 10px;
       margin: 20px 0;
+      width: 100%;
+      max-width: 900px;
     }
+
     select, input[type="text"] {
-      padding: 6px;
-      font-size: 16px;
-      border-radius: 4px;
+      padding: 8px 10px;
+      font-size: 1rem;
+      border-radius: 6px;
       border: 1px solid #ccc;
+      min-width: 160px;
+      flex-grow: 1;
+      max-width: 250px;
+      transition: border-color 0.3s;
     }
+
+    select:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: #004aad;
+      box-shadow: 0 0 5px rgba(0, 74, 173, 0.5);
+    }
+
     button {
-      padding: 6px 12px;
-      font-size: 16px;
+      padding: 8px 18px;
+      font-size: 1rem;
       background-color: #004aad;
       color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
+      min-width: 120px;
+      transition: background-color 0.3s;
+      flex-shrink: 0;
     }
+
     button:hover {
       background-color: #003080;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: left;
-    }
-    th {
-      background-color: #004aad;
-      color: white;
-    }
+
     #networkQuality {
       display: flex;
       justify-content: center;
       align-items: center;
       font-weight: bold;
-      margin: 10px 0;
+      margin: 10px 0 20px 0;
+      gap: 10px;
+      user-select: none;
     }
+
     #heartGraph {
       width: 50px;
       height: 50px;
@@ -90,32 +117,75 @@
       background-size: 50% 100%;
       transform: rotate(-45deg);
       animation: heartbeat 1s infinite;
+      flex-shrink: 0;
     }
+
     @keyframes heartbeat {
       0%, 100% { transform: scale(1) rotate(-45deg); }
       50% { transform: scale(1.2) rotate(-45deg); }
     }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      max-width: 900px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      background: white;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px 15px;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background-color: #004aad;
+      color: white;
+      user-select: none;
+    }
+
     #lineGraphLabel {
       text-align: center;
-      font-size: 18px;
+      font-size: 1.2rem;
       font-weight: bold;
       margin-top: 10px;
+      margin-bottom: 8px;
       color: #004aad;
+      user-select: none;
     }
+
     canvas#faultChart {
-      margin-top: 10px;
-      display: block;
-      max-width: 100%;
+      max-width: 900px;
+      width: 100%;
       height: 400px !important;
-      width: 100% !important;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,74,173,0.2);
+      background: white;
     }
-    .footer {
-      text-align: center;
-      margin-top: 40px;
-      padding: 10px;
-      font-size: 14px;
-      color: #666;
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      select, input[type="text"], button {
+        max-width: 100%;
+        min-width: auto;
+      }
+      table, canvas#faultChart {
+        max-width: 100%;
+      }
     }
+
   </style>
 </head>
 <body>
@@ -138,10 +208,10 @@
 
   <div id="networkQuality">
     <div id="heartGraph"></div>
-    <span id="networkQualityText" style="margin-left: 10px;"></span>
+    <span id="networkQualityText"></span>
   </div>
 
-  <table id="faultTable">
+  <table id="faultTable" aria-label="Fault Table">
     <thead>
       <tr>
         <th>Fault Type</th>
@@ -154,11 +224,7 @@
   </table>
 
   <div id="lineGraphLabel">📈 Line Graphs</div>
-  <canvas id="faultChart"></canvas>
-
-  <div class="footer">
-    © <span id="currentYear"></span> OCTA NETWORK - All Rights Reserved
-  </div>
+  <canvas id="faultChart" aria-label="Fault Chart" role="img"></canvas>
 
   <script>
     const translations = {
@@ -167,53 +233,137 @@
       iq: ["سنتر البيانات", "الدعم الفـني", "جهاز الانترنت"]
     };
 
+    let currentLang = 'en';
+
     function updateLanguage() {
-      const lang = document.getElementById('languageSelect').value;
+      currentLang = document.getElementById('languageSelect').value;
       const sectionSelect = document.getElementById('sectionSelect');
-      const currentValue = sectionSelect.value;
+      const previousValue = sectionSelect.value;
       sectionSelect.innerHTML = "";
 
-      translations[lang].forEach((label, index) => {
+      translations[currentLang].forEach((label, index) => {
         const option = document.createElement("option");
         option.value = translations.en[index];
         option.textContent = label;
-        if (option.value === currentValue) {
+        if (option.value === previousValue) {
           option.selected = true;
         }
         sectionSelect.appendChild(option);
       });
+
+      updatePlaceholder();
+      updateDirection();
+      loadData();
     }
 
-    // Initial language setup
-    updateLanguage();
+    function updatePlaceholder() {
+      const searchInput = document.getElementById('searchInput');
+      if (currentLang === 'ar') {
+        searchInput.placeholder = "بحث...";
+      } else if (currentLang === 'iq') {
+        searchInput.placeholder = "دور على...";
+      } else {
+        searchInput.placeholder = "Search...";
+      }
+    }
 
+    function updateDirection() {
+      const dir = (currentLang === 'ar' || currentLang === 'iq') ? 'rtl' : 'ltr';
+      document.documentElement.dir = dir;
+      document.body.style.textAlign = dir === 'rtl' ? 'right' : 'left';
+    }
+
+    async function loadData() {
+      const sheetUrls = {
+        "Data Center": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQPiO867GG99zr8U6dvZpNqy8kPJKvuLXY66EczQsFoWPNudIhVfNNLLKK5xXtZfD3UaW6MXnEBCsBR/pub?output=csv",
+        "Technical Support": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR39W1cXr92a99T_RDr5abulfG66yPTqXQ21703PuuArM8V83yzvu5i0DTRyMpfboDwFS-pJFh1275d/pub?output=csv",
+        "Optical Network Terminal": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN2GFky2y7XqmxhMa8xoOiYg6cCmc9c3edIyN5c9-bkBvN6vRjJnRf7YHTsQmLvWAXG6aQPLoJmeQk/pub?output=csv"
+      };
+
+      const selectedValue = document.getElementById('sectionSelect').value;
+      if (!sheetUrls[selectedValue]) {
+        alert("Sheet URL not defined for this section.");
+        return;
+      }
+
+      // تحميل بيانات CSV ثم عرضها في الجدول مع بعض الفلترة البسيطة
+      try {
+        const response = await fetch(sheetUrls[selectedValue]);
+        const csvText = await response.text();
+        const rows = csvText.trim().split('\n').map(r => r.split(','));
+        const tbody = document.querySelector("#faultTable tbody");
+        tbody.innerHTML = "";
+
+        rows.slice(1).forEach(row => {
+          const tr = document.createElement("tr");
+          row.forEach(cell => {
+            const td = document.createElement("td");
+            td.textContent = cell;
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+      } catch (e) {
+        alert("Error loading data: " + e.message);
+      }
+    }
+
+    document.getElementById('reloadButton').addEventListener('click', loadData);
+
+    // Search filtering
+    document.getElementById('searchInput').addEventListener('input', function () {
+      const filter = this.value.toLowerCase();
+      const rows = document.querySelectorAll("#faultTable tbody tr");
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(filter) ? "" : "none";
+      });
+    });
+
+    // رسم بياني بسيط مع Chart.js (مثال)
     const ctx = document.getElementById('faultChart').getContext('2d');
-    const faultChart = new Chart(ctx, {
+    let faultChart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
         datasets: [{
-          label: 'Network Faults',
-          data: [3, 6, 4, 8],
+          label: 'Faults',
+          data: [12, 19, 3, 5, 2, 3, 7],
           borderColor: '#004aad',
-          backgroundColor: 'rgba(0, 74, 173, 0.1)',
+          backgroundColor: 'rgba(0, 74, 173, 0.3)',
           fill: true,
-          tension: 0.3
+          tension: 0.3,
+          pointRadius: 5,
+          pointHoverRadius: 7,
         }]
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
           y: {
-            beginAtZero: true
+            beginAtZero: true,
+            ticks: { stepSize: 1 }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: { font: { size: 14 } }
           }
         }
       }
     });
 
-    // Set dynamic year in footer
-    document.getElementById("currentYear").textContent = new Date().getFullYear();
-  </script>
+    // جودة الشبكة مع مؤشر القلب
+    function updateNetworkQuality() {
+      const quality = Math.floor(Math.random() * 100) + 1; // مثال: رقم عشوائي بين 1 و 100
+      document.getElementById('networkQualityText').textContent = `Network Quality: ${quality}%`;
+    }
 
+    updateLanguage();
+    updateNetworkQuality();
+    loadData();
+
+  </script>
 </body>
 </html>
