@@ -7,7 +7,7 @@ const translations = {
 const sheetUrls = {
   "Data Center": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQPiO867GG99zr8U6dvZpNqy8kPJKvuLXY66EczQsFoWPNudIhVfNNLLKK5xXtZfD3UaW6MXnEBCsBR/pub?output=csv",
   "Technical Support": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR39W1cXr92a99T_RDr5abulfG66yPTqXQ21703PuuArM8V83yzvu5i0DTRyMpfboDwFS-pJFh1275d/pub?output=csv",
-  "Optical Network Terminal": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSLzwW5RjsdOqTKM8Iy28GT3xfrbFQyH_pHadurzijKyJD8LAN6OsFf7m_pi1gr_PCegcQTALsWw_rT/pub?output=csv"
+  "Optical Network Terminal": "https://docs.google.com/spreadsheets/d/e/2PACX-1vTmvmSvDpOKVK5Pn5k1RewM76GiKS8AqjueveFNDiSDrG1u1dtAylAbeJdEb_q2jaMGVNQp5j8C4ZdG/pub?output=csv"
 };
 
 function updateLanguage() {
