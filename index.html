@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة إدارة أعطال الشبكة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container animate__animated animate__fadeIn">
+    <header>
+      <h1>لوحة تشخيص أعطال الشبكة</h1>
+      <div class="lang-switch">
+        <button onclick="setLanguage('ar')">العربية</button>
+        <button onclick="setLanguage('en')">English</button>
+        <button onclick="setLanguage('irq')">عراقي</button>
+      </div>
+    </header>
+
+    <section class="controls">
+      <label for="sectionSelect">اختر القسم:</label>
+      <select id="sectionSelect" onchange="loadSection()">
+        <option value="technical">الدعم الفني</option>
+        <option value="ont">جهاز الـ ONT</option>
+        <option value="datacenter">مركز البيانات</option>
+      </select>
+    </section>
+
+    <section class="network-quality">
+      <h2>جودة الشبكة:</h2>
+      <div id="qualityRating">⭐⭐⭐</div>
+    </section>
+
+    <section class="search">
+      <input type="text" id="searchInput" placeholder="ابحث عن عطل..." onkeyup="filterTable()">
+    </section>
+
+    <section class="table-section">
+      <table id="faultTable">
+        <thead>
+          <tr>
+            <th>نوع العطل</th>
+            <th>السبب المحتمل</th>
+            <th>خطوات المعالجة</th>
+            <th>الحل النهائي</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="chart-section">
+      <canvas id="faultChart"></canvas>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

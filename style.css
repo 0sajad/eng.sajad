@@ -1,0 +1,106 @@
+body {
+  font-family: 'Cairo', sans-serif;
+  background: #f7f9fc;
+  margin: 0;
+  padding: 0;
+  direction: rtl;
+  text-align: right;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  font-size: 24px;
+  color: #333;
+}
+
+.lang-switch button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.lang-switch button:hover {
+  background: #0056b3;
+}
+
+.controls, .network-quality, .search {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+select, input[type="text"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.network-quality #qualityRating {
+  font-size: 20px;
+  color: #ffc107;
+}
+
+.table-section {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+th, td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+th {
+  background-color: #007bff;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.chart-section {
+  margin-top: 40px;
+}
+
+@media (max-width: 600px) {
+  header, .controls, .network-quality, .search {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lang-switch {
+    margin-top: 10px;
+  }
+}
