@@ -1,62 +1,219 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>لوحة إدارة أعطال الشبكة</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCTA NETWORK</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      color: #004aad;
+      margin-bottom: 5px;
+      animation: fadeInMove 2s infinite alternate;
+      font-size: 36px;
+      letter-spacing: 1.5px;
+      text-shadow: 1px 1px 3px #aaa;
+    }
+    @keyframes fadeInMove {
+      0% { opacity: 0; transform: translateY(-10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    #signature {
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+      animation: floatText 4s ease-in-out infinite;
+    }
+    @keyframes floatText {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0); }
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    select, input[type="text"] {
+      padding: 6px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 6px 12px;
+      font-size: 16px;
+      background-color: #004aad;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #003080;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #004aad;
+      color: white;
+    }
+    #networkQuality {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    #heartGraph {
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, red 30%, transparent 31%), radial-gradient(circle, red 30%, transparent 31%);
+      background-position: left center, right center;
+      background-repeat: no-repeat;
+      background-size: 50% 100%;
+      transform: rotate(-45deg);
+      animation: heartbeat 1s infinite;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1) rotate(-45deg); }
+      50% { transform: scale(1.2) rotate(-45deg); }
+    }
+    #lineGraphLabel {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #004aad;
+    }
+    canvas#faultChart {
+      margin-top: 10px;
+      display: block;
+      max-width: 100%;
+      height: 400px !important;
+      width: 100% !important;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 10px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
 </head>
 <body>
-  <div class="container animate__animated animate__fadeIn">
-    <header>
-      <h1>لوحة تشخيص أعطال الشبكة</h1>
-      <div class="lang-switch">
-        <button onclick="setLanguage('ar')">العربية</button>
-        <button onclick="setLanguage('en')">English</button>
-        <button onclick="setLanguage('irq')">عراقي</button>
-      </div>
-    </header>
 
-    <section class="controls">
-      <label for="sectionSelect">اختر القسم:</label>
-      <select id="sectionSelect" onchange="loadSection()">
-        <option value="technical">الدعم الفني</option>
-        <option value="ont">جهاز الـ ONT</option>
-        <option value="datacenter">مركز البيانات</option>
-      </select>
-    </section>
+  <h1>OCTA NETWORK</h1>
+  <div id="signature">Eng.Sajad Kadhim</div>
 
-    <section class="network-quality">
-      <h2>جودة الشبكة:</h2>
-      <div id="qualityRating">⭐⭐⭐</div>
-    </section>
+  <div class="controls">
+    <select id="languageSelect" onchange="updateLanguage()">
+      <option value="en">English</option>
+      <option value="ar">العربية</option>
+      <option value="iq">العراقية</option>
+    </select>
 
-    <section class="search">
-      <input type="text" id="searchInput" placeholder="ابحث عن عطل..." onkeyup="filterTable()">
-    </section>
+    <select id="sectionSelect"></select>
 
-    <section class="table-section">
-      <table id="faultTable">
-        <thead>
-          <tr>
-            <th>نوع العطل</th>
-            <th>السبب المحتمل</th>
-            <th>خطوات المعالجة</th>
-            <th>الحل النهائي</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </section>
-
-    <section class="chart-section">
-      <canvas id="faultChart"></canvas>
-    </section>
+    <input type="text" id="searchInput" placeholder="Search...">
+    <button id="reloadButton">🔄 Reload</button>
   </div>
 
-  <script src="app.js"></script>
+  <div id="networkQuality">
+    <div id="heartGraph"></div>
+    <span id="networkQualityText" style="margin-left: 10px;"></span>
+  </div>
+
+  <table id="faultTable">
+    <thead>
+      <tr>
+        <th>Fault Type</th>
+        <th>Possible Cause</th>
+        <th>Troubleshooting Steps</th>
+        <th>Final Solution</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div id="lineGraphLabel">📈 Line Graphs</div>
+  <canvas id="faultChart"></canvas>
+
+  <div class="footer">
+    © <span id="currentYear"></span> OCTA NETWORK - All Rights Reserved
+  </div>
+
+  <script>
+    const translations = {
+      en: ["Data Center", "Technical Support", "Optical Network Terminal"],
+      ar: ["مركز البيانات", "الدعم الفني", "جهاز الـ ONT"],
+      iq: ["سنتر البيانات", "الدعم الفـني", "جهاز الانترنت"]
+    };
+
+    function updateLanguage() {
+      const lang = document.getElementById('languageSelect').value;
+      const sectionSelect = document.getElementById('sectionSelect');
+      const currentValue = sectionSelect.value;
+      sectionSelect.innerHTML = "";
+
+      translations[lang].forEach((label, index) => {
+        const option = document.createElement("option");
+        option.value = translations.en[index];
+        option.textContent = label;
+        if (option.value === currentValue) {
+          option.selected = true;
+        }
+        sectionSelect.appendChild(option);
+      });
+    }
+
+    // Initial language setup
+    updateLanguage();
+
+    const ctx = document.getElementById('faultChart').getContext('2d');
+    const faultChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+        datasets: [{
+          label: 'Network Faults',
+          data: [3, 6, 4, 8],
+          borderColor: '#004aad',
+          backgroundColor: 'rgba(0, 74, 173, 0.1)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    // Set dynamic year in footer
+    document.getElementById("currentYear").textContent = new Date().getFullYear();
+  </script>
+
 </body>
 </html>
